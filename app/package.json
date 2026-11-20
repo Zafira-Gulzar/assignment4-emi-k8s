@@ -1,0 +1,13 @@
+{
+  "name": "emi-web",
+  "version": "1.0.0",
+  "description": "Loan EMI Calculator - Assignment 4 Cloud Computing (DS-584)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongodb": "^6.9.0"
+  }
+}
