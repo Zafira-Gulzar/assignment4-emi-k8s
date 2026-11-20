@@ -1,0 +1,45 @@
+This is ApacheBench, Version 2.3 <$Revision: 1923142 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking emi.local (be patient)
+
+
+Server Software:        
+Server Hostname:        emi.local
+Server Port:            80
+
+Document Path:          /api/emi
+Document Length:        126 bytes
+
+Concurrency Level:      30
+Time taken for tests:   60.001 seconds
+Complete requests:      8371
+Failed requests:        0
+Total transferred:      2795914 bytes
+Total body sent:        1587600
+HTML transferred:       1054746 bytes
+Requests per second:    139.51 [#/sec] (mean)
+Time per request:       215.032 [ms] (mean)
+Time per request:       7.168 [ms] (mean, across all concurrent requests)
+Transfer rate:          45.51 [Kbytes/sec] received
+                        25.84 kb/s sent
+                        71.35 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.4      0       6
+Processing:    43  214  77.0    199     989
+Waiting:       40  212  76.7    198     988
+Total:         43  214  77.0    199     989
+
+Percentage of the requests served within a certain time (ms)
+  50%    199
+  66%    205
+  75%    212
+  80%    224
+  90%    302
+  95%    388
+  98%    407
+  99%    476
+ 100%    989 (longest request)
