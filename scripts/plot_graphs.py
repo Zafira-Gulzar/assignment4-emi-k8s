@@ -24,15 +24,15 @@ try:
 except Exception as e:
     print(f"Error creating Graph 1: {e}")
 
-# Graph 2 (Sirf 100 req/s aur 3 replicas wale 60 seconds ka data)
+# Graph 2 (100 req/s, 3 replicas - SAHI TIME FILTER)
 try:
     metrics_path = os.path.join(raw_dir, 'cpu_memory_metrics.csv')
     df_metrics = pd.read_csv(metrics_path)
     start_time = df_metrics['timestamp'].min()
     df_metrics['time_min'] = (df_metrics['timestamp'] - start_time) / 60.0
     
-    # Sirf us specific 1 minute ka data filter kar rahe hain (17 se 18 minute ke beech)
-    df_metrics = df_metrics[(df_metrics['time_min'] >= 17.0) & (df_metrics['time_min'] <= 18.0)]
+    # Sahi time window: 12.5 se 14.5 minute ke darmiyan (100 req/s wala run)
+    df_metrics = df_metrics[(df_metrics['time_min'] >= 12.5) & (df_metrics['time_min'] <= 14.5)]
     
     df_metrics['cpu_val'] = df_metrics['cpu'].str.replace('m', '').astype(float)
     df_metrics['cpu_pct'] = (df_metrics['cpu_val'] / 100.0) * 100 
@@ -40,7 +40,7 @@ try:
     plt.figure(figsize=(10, 6))
     for pod in df_metrics['pod_name'].unique():
         pod_data = df_metrics[df_metrics['pod_name'] == pod]
-        # marker='o' ka matlab hai ke graph par dots (points) nazar aayenge
+        # marker='o' se graph par dots (points) nazar aayenge
         plt.plot(pod_data['time_min'], pod_data['cpu_pct'], marker='o', label=pod)
         
     plt.title('CPU Utilization (%) per Pod during 100 req/s Run (3 Replicas)')
