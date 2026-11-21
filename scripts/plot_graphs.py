@@ -24,17 +24,15 @@ try:
 except Exception as e:
     print(f"Error creating Graph 1: {e}")
 
-# Graph 2 (Updated to use relative seconds)
+# Graph 2
 try:
     metrics_path = os.path.join(raw_dir, 'cpu_memory_metrics.csv')
     df_metrics = pd.read_csv(metrics_path)
     start_time = df_metrics['timestamp'].min()
     df_metrics['time_min'] = (df_metrics['timestamp'] - start_time) / 60.0
     
-    # Filter window (24 to 26 minutes)
     df_metrics = df_metrics[(df_metrics['time_min'] >= 24.0) & (df_metrics['time_min'] <= 26.0)]
     
-    # CLAUDE'S FIX: Relative time in seconds starting from 0
     min_time_window = df_metrics['timestamp'].min()
     df_metrics['time_sec'] = df_metrics['timestamp'] - min_time_window
     
@@ -57,7 +55,7 @@ try:
 except Exception as e:
     print(f"Error creating Graph 2: {e}")
 
-# Graph 3
+# Graph 3 (Updated Label)
 try:
     hpa_path = os.path.join(raw_dir, 'hpa_metrics.csv')
     df_hpa = pd.read_csv(hpa_path)
@@ -80,11 +78,14 @@ try:
     
     ax3 = ax1.twinx()
     ax3.spines["right"].set_position(("axes", 1.1))
-    ax3.set_ylabel('Request Rate (req/s)', color='tab:green')
-    ax3.plot(time_axis, req_line, color='tab:green', linestyle='--', label='Request Rate')
+    
+    # Yahan label change kiya gaya hai
+    ax3.set_ylabel('Target Request Rate (req/s)', color='tab:green')
+    
+    ax3.plot(time_axis, req_line, color='tab:green', linestyle='--', label='Target Request Rate')
     ax3.tick_params(axis='y', labelcolor='tab:green')
     
-    plt.title('Autoscaling: CPU, Replicas, and Request Rate over Time')
+    plt.title('Autoscaling: CPU, Replicas, and Target Request Rate over Time')
     fig.tight_layout()
     plt.savefig(os.path.join(base_dir, 'graph3_autoscaling.png'))
     plt.close()
