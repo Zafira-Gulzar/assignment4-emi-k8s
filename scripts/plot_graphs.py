@@ -24,15 +24,15 @@ try:
 except Exception as e:
     print(f"Error creating Graph 1: {e}")
 
-# Graph 2 (100 req/s, 3 replicas - SAHI TIME FILTER)
+# Graph 2 (EXACT 60-SECOND WINDOW: 24 se 26 minute ke darmiyan)
 try:
     metrics_path = os.path.join(raw_dir, 'cpu_memory_metrics.csv')
     df_metrics = pd.read_csv(metrics_path)
     start_time = df_metrics['timestamp'].min()
     df_metrics['time_min'] = (df_metrics['timestamp'] - start_time) / 60.0
     
-    # Sahi time window: 12.5 se 14.5 minute ke darmiyan (100 req/s wala run)
-    df_metrics = df_metrics[(df_metrics['time_min'] >= 12.5) & (df_metrics['time_min'] <= 14.5)]
+    # Yahan humne exact 24.0 se 26.0 minute ka filter lagaya hai
+    df_metrics = df_metrics[(df_metrics['time_min'] >= 24.0) & (df_metrics['time_min'] <= 26.0)]
     
     df_metrics['cpu_val'] = df_metrics['cpu'].str.replace('m', '').astype(float)
     df_metrics['cpu_pct'] = (df_metrics['cpu_val'] / 100.0) * 100 
@@ -40,8 +40,8 @@ try:
     plt.figure(figsize=(10, 6))
     for pod in df_metrics['pod_name'].unique():
         pod_data = df_metrics[df_metrics['pod_name'] == pod]
-        # marker='o' se graph par dots (points) nazar aayenge
-        plt.plot(pod_data['time_min'], pod_data['cpu_pct'], marker='o', label=pod)
+        # marker='o' se dots lag jayenge
+        plt.plot(pod_data['time_min'], pod_data['cpu_pct'], marker='o', markersize=8, label=pod)
         
     plt.title('CPU Utilization (%) per Pod during 100 req/s Run (3 Replicas)')
     plt.xlabel('Time (minutes)')
